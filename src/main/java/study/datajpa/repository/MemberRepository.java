@@ -27,6 +27,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 	// By 앞에 오는 Hello는 커스텀이 가능함. (아무거나 적어도 됨)
 	List<Member> findHelloBy();
 
+
 	// Limit 쿼리 (Hello는 빼도 됨)
 	List<Member> findTop3HelloBy();
 

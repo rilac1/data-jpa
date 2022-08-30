@@ -24,3 +24,4 @@ public class DataJpaApplication {
 		return () -> Optional.of(UUID.randomUUID().toString());
 	}
 }
+
