@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +37,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	List<Member> findListByUsername(String username);
 	Member findMemberByUsername(String username);
 	Optional<Member> findOptionalByUsername(String username);
+
+	//count 쿼리를 분리할 수 있다. (left join의 경우 count 하는데 join이 필요하지 않기 때문)
+	// @Query(value = "select m from Member m left join m.team t",
+	// 	countQuery = "select count(m) from Member m")
+	Page<Member> findByAge(int age, Pageable pageable);
 }
