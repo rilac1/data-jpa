@@ -6,6 +6,9 @@ import java.awt.print.Pageable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +30,7 @@ public class MemberRepositoryTest {
 
 	@Autowired MemberRepository memberRepository;
 	@Autowired TeamRepository teamRepository;
+	@PersistenceContext EntityManager em;
 
 	@Test
 	public void testMember() {
@@ -171,5 +175,27 @@ public class MemberRepositoryTest {
 		assertThat(page.getTotalPages()).isEqualTo(2);
 		assertThat(page.isFirst()).isTrue();
 		assertThat(page.hasNext()).isTrue();
+	}
+
+	@Test
+	public void bulkUpdate() {
+		//given
+		memberRepository.save(new Member("member1", 10));
+		memberRepository.save(new Member("member2", 19));
+		memberRepository.save(new Member("member3", 20));
+		memberRepository.save(new Member("member4", 21));
+		memberRepository.save(new Member("member5", 40));
+
+		//when
+		int resultCount = memberRepository.bulkAgePlus(20);
+		// em.flush();
+		// em.clear();
+
+		List<Member> result = memberRepository.findByUsername("member5");
+		Member member5 = result.get(0);
+		System.out.println("member5 = " + member5);
+
+		//then
+		assertThat(resultCount).isEqualTo(3);
 	}
 }
